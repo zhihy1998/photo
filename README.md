@@ -4,5 +4,5 @@ long_exposure.py
 
 - The video needs to be stable
 - The two modes I often use are:
-- Firefly Mode, which preserves the maximum RGB value (i.e., the brightest part)
-- Stream Mode, which computes the average of the RGB values
+- "firefly" Mode, which preserves the maximum RGB value (i.e., the brightest part)
+- "stream" Mode, which computes the average of the RGB values
