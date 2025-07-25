@@ -3,7 +3,7 @@ import numpy as np
 
 
 def video2pic(input_file, output_file, mode):
-    rCalc, gCalc, bCalc = None, None, None
+    r_calc, g_calc, b_calc = None, None, None
     total = 0
     vid = cv2.VideoCapture(input_file)
 
@@ -15,35 +15,35 @@ def video2pic(input_file, output_file, mode):
 
         total += 1
 
-        B, G, R = cv2.split(frame.astype("float"))
+        b, g, r = cv2.split(frame.astype("float"))
 
-        if rCalc is None:
-            rCalc = R
-            gCalc = G
-            bCalc = B
+        if r_calc is None:
+            r_calc = r
+            g_calc = g
+            b_calc = b
         else:
             if mode == "stream":
-                rCalc = cv2.accumulateWeighted(R, rCalc, 1 / total)
-                gCalc = cv2.accumulateWeighted(G, gCalc, 1 / total)
-                bCalc = cv2.accumulateWeighted(B, bCalc, 1 / total)
+                r_calc = cv2.accumulateWeighted(r, r_calc, 1 / total)
+                g_calc = cv2.accumulateWeighted(g, g_calc, 1 / total)
+                b_calc = cv2.accumulateWeighted(b, b_calc, 1 / total)
             elif mode == "firefly":
-                rCalc = np.maximum(rCalc, R)
-                gCalc = np.maximum(gCalc, G)
-                bCalc = np.maximum(bCalc, B)
+                r_calc = np.maximum(r_calc, r)
+                g_calc = np.maximum(g_calc, g)
+                b_calc = np.maximum(b_calc, b)
             else:
-                raise ValueError("Illegal Mode")
+                raise ValueError("illegal mode.")
 
-    if ret is False:
-        raise ValueError("Reading Video Failed!")
+    if total == 0:
+        raise ValueError("might be vid.read() error.")
 
-    avg = cv2.merge([bCalc, gCalc, rCalc]).astype("uint8")
+    avg = cv2.merge([b_calc, g_calc, r_calc]).astype("uint8")
     cv2.imwrite(output_file, avg)
 
 
-video2pic(r"D:\github\photo_long_exposure\input_file\firefly.mp4",
-          r"D:\github\photo_long_exposure\output_file\firefly.png",
-          "firefly")
+# video2pic(r".\input\firefly.mp4",
+#           r".\output\firefly.png",
+#           "firefly")
 #
-# video2pic(r"D:\github\photo_long_exposure\input\stream.mp4",
-#           r"D:\github\photo_long_exposure\output\stream.png",
+# video2pic(r".\input\stream.mp4",
+#           r".\output\stream.png",
 #           "stream")
